@@ -1,0 +1,120 @@
+const contact = "/sounds/TOONBoing_Boing cartoon 2 (ID 2278)_LS.wav";
+const lose = "/sounds/VOXLaff_Rire horrible 3 (ID 2093)_LS.wav";
+
+// var paddle = document.createElement("div");
+// paddle.classList.add('divAMover');
+// gameBody.appendChild(paddle);
+
+// const ball = document.createElement('div');
+// gameBody.append(ball);
+// ball.id = 'ball'
+
+const ballRadius = 10;
+const gameWidth = gameBody.offsetWidth;
+const gameHeight = gameBody.offsetHeight;
+const paddleWidth = paddle.offsetWidth;
+
+let ballX = gameWidth / 2;
+let ballY = gameHeight - 30;
+let paddleX = (gameWidth - paddleWidth) / 2;
+
+let dx = 2;
+let dy = -2;
+let paddleSpeed = 6;
+let rightPressed = false;
+let leftPressed = false;
+document.addEventListener('keydown', keyDownHandler);
+document.addEventListener('keyup', keyUpHandler);
+
+function keyDownHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+        rightPressed = true;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+        rightPressed = false;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        leftPressed = false;
+    }
+}
+
+function drawBall() {
+    ball.style.left = ballX + 'px';
+    ball.style.top = ballY + 'px';
+}
+
+function drawPaddle() {
+    paddle.style.left = paddleX + 'px';
+}
+
+function moveBall() {
+    ballX += dx;
+    ballY += dy;
+
+    if (ballX + dx > gameWidth - ballRadius || ballX + dx < ballRadius) {
+        dx = -dx;
+    }
+    if (ballY + dy < ballRadius) {
+        dy = -dy;
+    } else if (ballY + dy > gameHeight - ballRadius) {
+        dy = -dy;
+    }
+
+    if (ballX > paddleX && ballX < paddleX + paddleWidth && ballY > gameHeight - ballRadius - paddle.offsetHeight) {
+        dy = -dy;
+    }
+}
+
+function movePaddle() {
+    if (rightPressed && paddleX < gameWidth - paddleWidth) {
+        paddleX += paddleSpeed;
+    } else if (leftPressed && paddleX > 0) {
+        paddleX -= paddleSpeed;
+    }
+}
+
+export function gameLoop() {
+    moveBall();
+    movePaddle();
+    drawBall();
+    drawPaddle();
+    requestAnimationFrame(gameLoop);
+}
+
+// gameLoop();
+
+function playSound(v) {
+    var myAudio = document.createElement("audio");
+    myAudio.src = v;
+    myAudio.play();
+    console.log("here")
+}
+
+// const contact = "/sounds/TOONBoing_Boing cartoon 2 (ID 2278)_LS.wav";
+// const lose = "/sounds/VOXLaff_Rire horrible 3 (ID 2093)_LS.wav";
+
+
+
+function movePaddle() {
+    var player = document.createElement("div");
+    player.classList.add('divAMover');
+    gameBody.appendChild(player);
+}
+
+function moveBall() {
+    const ball = document.createElement('div');
+    gameBody.append(ball);
+};
+
+gameLoop();
+
+function playSound(v) {
+    var myAudio = document.createElement("audio");
+    myAudio.src = v;
+    myAudio.play();
+    console.log("here")
+}
